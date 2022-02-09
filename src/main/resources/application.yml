@@ -1,0 +1,8 @@
+server:
+  port: ${SERVER_PORT:8006}
+
+minio:
+  endpoint: ${MINIO_ENDPOINT:https://http://localhost:9000}
+  accesskey: ${MINIO_ASSESSKEY:minioadmin}
+  secretkey: ${MINIO_SECRETKEY:minioadmin}
+  bucket: ${MINIO_BUCKET:tuinetest}

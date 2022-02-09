@@ -1,17 +1,23 @@
 package me.tuine.minio.configurer;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import com.google.common.collect.HashMultimap;
+import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.ListPartsResponse;
+import io.minio.MinioClient;
 import io.minio.http.Method;
 import io.minio.messages.Part;
+import lombok.SneakyThrows;
 import me.tuine.minio.util.CustomMinioClient;
+import me.tuine.minio.util.Dates;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-import io.minio.*;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +31,10 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @EnableConfigurationProperties({MinioProperties.class})
 public class MinIoUtils {
+
+    @Autowired
+    private RedisUtil redisUtil;
+
     private final MinioProperties minioProperties;
     private CustomMinioClient customMinioClient;
 
@@ -78,40 +88,44 @@ public class MinIoUtils {
      * @param contentType 类型，如果类型使用默认流会导致无法预览
      * @return /
      */
+    @SneakyThrows
     public Map<String, Object> initMultiPartUpload(String objectName, int partCount, String contentType) {
-        Map<String, Object> result = new HashMap<>();
-        try {
-            if (StrUtil.isBlank(contentType)) {
-                contentType = "application/octet-stream";
-            }
-            HashMultimap<String, String> headers = HashMultimap.create();
-            headers.put("Content-Type", contentType);
-            String uploadId = customMinioClient.initMultiPartUpload(minioProperties.getBucket(), null, objectName, headers, null);
-
-            result.put("uploadId", uploadId);
-            List<String> partList = new ArrayList<>();
-
-            Map<String, String> reqParams = new HashMap<>();
-            //reqParams.put("response-content-type", "application/json");
-            reqParams.put("uploadId", uploadId);
-            for (int i = 1; i <= partCount; i++) {
-                reqParams.put("partNumber", String.valueOf(i));
-                String uploadUrl = customMinioClient.getPresignedObjectUrl(
-                        GetPresignedObjectUrlArgs.builder()
-                                .method(Method.PUT)
-                                .bucket(minioProperties.getBucket())
-                                .object(objectName)
-                                .expiry(1, TimeUnit.DAYS)
-                                .extraQueryParams(reqParams)
-                                .build());
-                partList.add(uploadUrl);
-            }
-            result.put("uploadUrls", partList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        JSONObject result = new JSONObject(true);
+        if (StrUtil.isBlank(contentType)) {
+            contentType = "application/octet-stream";
         }
+        HashMultimap<String, String> headers = HashMultimap.create();
+        headers.put("Content-Type", contentType);
+        String uploadId = customMinioClient.initMultiPartUpload(minioProperties.getBucket(), null, objectName, headers, null);
+        result.putOnce("uploadId", uploadId);
 
+        //添加当前时间戳，防止重复上传同一个文件造成数据错误
+        String dateStr=Dates.now().formatAllDateTime();
+        result.putOnce("folderId", dateStr);
+        //将临时文件夹存储到redis
+        redisUtil.set(uploadId,dateStr,60*60*24*7);
+        JSONArray partList = new JSONArray();
+        //请求参数
+        Map<String, String> reqParams = new HashMap<>();
+        //reqParams.put("response-content-type", "application/json");
+        reqParams.put("uploadId", uploadId);
+        for (int i = 1; i <= partCount; i++) {
+            JSONObject uploadInfo = new JSONObject(true);
+            reqParams.put("partNumber", String.valueOf(i));
+            String uploadUrl = customMinioClient.getPresignedObjectUrl(
+                    GetPresignedObjectUrlArgs.builder()
+                            .method(Method.PUT)
+                            .bucket(minioProperties.getBucket())
+                            .object(dateStr+objectName)
+                            .expiry(1, TimeUnit.DAYS)
+                            .extraQueryParams(reqParams)
+                            .build());
+            uploadInfo.putOnce("part",i);
+            uploadInfo.putOnce("uploadUrl",uploadUrl);
+            partList.add(uploadInfo);
+        }
+        result.putOnce("uploadUrls", partList);
+        redisUtil.set(dateStr,result);//缓存结果
         return result;
     }
 
@@ -140,4 +154,20 @@ public class MinIoUtils {
 
         return true;
     }
+
+    /**
+     * 初始化分片信息后，获取对应的分片地址信息
+     * @param uploadId
+     * @param part
+     * @return
+     */
+    public String getAllFilePartInfo(String uploadId,int part) {
+        if(redisUtil.hasKey(uploadId)){
+            JSONObject jsonObject= (JSONObject) redisUtil.get(uploadId);
+            JSONArray array= (JSONArray) jsonObject.get("uploadUrls");
+            return (String) ((JSONObject)array.get(part)).get("uploadUrl");
+        }
+        return null;
+    }
+
 }

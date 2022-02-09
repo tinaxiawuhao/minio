@@ -1,6 +1,16 @@
 server:
   port: ${SERVER_PORT:8006}
-
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    database: 1
+    timeout: 3000
+    lettuce:
+      pool.max-idle: 8 #连接池中最大空闲连接
+      pool.min-idle: 1 #连接池中最小空闲连接
+      pool.max-active: 8 #连接池最大连接数
+      pool.max-wait: -1  #连接池最大阻塞等待时间，负值表示没有限制
 minio:
   endpoint: ${MINIO_ENDPOINT:https://http://localhost:9000}
   accesskey: ${MINIO_ASSESSKEY:minioadmin}

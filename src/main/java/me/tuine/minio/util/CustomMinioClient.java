@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * 自定义minio
- * @author tuine
+ * @author wh
  * @date 2021-03-23
  */
 public class CustomMinioClient extends MinioClient {

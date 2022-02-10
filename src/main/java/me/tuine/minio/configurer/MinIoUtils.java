@@ -4,10 +4,9 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import com.google.common.collect.HashMultimap;
-import io.minio.GetPresignedObjectUrlArgs;
-import io.minio.ListPartsResponse;
-import io.minio.MinioClient;
+import io.minio.*;
 import io.minio.http.Method;
+import io.minio.messages.Item;
 import io.minio.messages.Part;
 import lombok.SneakyThrows;
 import me.tuine.minio.util.CustomMinioClient;
@@ -16,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,9 +102,11 @@ public class MinIoUtils {
 
         //添加当前时间戳，防止重复上传同一个文件造成数据错误
         String dateStr=Dates.now().formatAllDateTime();
-        result.putOnce("folderId", dateStr);
         //将临时文件夹存储到redis
-        redisUtil.set(uploadId,dateStr,60*60*24*7);
+        String concat = dateStr.concat("/").concat(objectName);
+        result.putOnce("folderId", concat);
+
+        redisUtil.set(uploadId,concat,60*60*24*7);
         JSONArray partList = new JSONArray();
         //请求参数
         Map<String, String> reqParams = new HashMap<>();
@@ -116,7 +119,7 @@ public class MinIoUtils {
                     GetPresignedObjectUrlArgs.builder()
                             .method(Method.PUT)
                             .bucket(minioProperties.getBucket())
-                            .object(dateStr+objectName)
+                            .object(concat)
                             .expiry(1, TimeUnit.DAYS)
                             .extraQueryParams(reqParams)
                             .build());
@@ -125,7 +128,7 @@ public class MinIoUtils {
             partList.add(uploadInfo);
         }
         result.putOnce("uploadUrls", partList);
-        redisUtil.set(dateStr,result);//缓存结果
+        redisUtil.set(concat,result);//缓存结果
         return result;
     }
 
@@ -157,17 +160,55 @@ public class MinIoUtils {
 
     /**
      * 初始化分片信息后，获取对应的分片地址信息
-     * @param uploadId
+     * @param folderId
      * @param part
      * @return
      */
-    public String getAllFilePartInfo(String uploadId,int part) {
-        if(redisUtil.hasKey(uploadId)){
-            JSONObject jsonObject= (JSONObject) redisUtil.get(uploadId);
+    public String getAllFilePartInfo(String folderId,int part) {
+        if(redisUtil.hasKey(folderId)){
+            JSONObject jsonObject= (JSONObject) redisUtil.get(folderId);
             JSONArray array= (JSONArray) jsonObject.get("uploadUrls");
             return (String) ((JSONObject)array.get(part)).get("uploadUrl");
         }
         return null;
+    }
+
+    /**
+     * 获取分片上传已经上传的索引列表
+     * @param uploadId
+     * @return
+     */
+
+    public List<Integer> listIncompleteUploads(String uploadId) {
+        List<Integer> list=new ArrayList<>();
+        if(redisUtil.hasKey(uploadId)){
+            String concat= (String) redisUtil.get(uploadId);
+            list  = listIncompleteUploads(minioProperties.getBucket(), concat);
+        }
+        return list;
+    }
+
+    /**
+     * 查询已经上传成功的文件
+     * @param bucketName
+     * @param prefix
+     */
+    @SneakyThrows
+    public List<Integer>  listIncompleteUploads(String bucketName,String prefix){
+        List<Integer> rslt=new ArrayList<>();
+        Iterable<Result<Item>> results=customMinioClient.listObjects(
+                ListObjectsArgs.builder()
+                        .bucket(bucketName)
+                        .prefix(prefix)
+                        .maxKeys(1000)
+                        .build());
+        for (Result<Item> result : results) {
+            String obectName = result.get().objectName();
+            String[] split = StringUtils.split(obectName, "_");
+            assert split != null;
+            rslt.add(Integer.parseInt(split[split.length-1]));
+        }
+        return rslt;
     }
 
 }

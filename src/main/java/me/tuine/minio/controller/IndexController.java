@@ -5,10 +5,14 @@ import cn.hutool.json.JSONObject;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import me.tuine.minio.service.UploadService;
+import me.tuine.minio.springdemo.MinioTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -65,5 +69,14 @@ public class IndexController {
         boolean result = uploadService.mergeMultipartUpload(objectName, uploadId);
 
         return new ResponseEntity<>(ImmutableMap.of("success", result), HttpStatus.OK);
+    }
+
+    @Autowired
+    MinioTemplate minioTemplate;
+
+    @PostMapping("/upload")
+    @ResponseBody
+    public Object upload(MultipartFile file, String bucketName) throws IOException {
+        return minioTemplate.putObject(file.getInputStream(), bucketName, file.getOriginalFilename());
     }
 }

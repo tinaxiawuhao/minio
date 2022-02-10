@@ -16,3 +16,12 @@ minio:
   accesskey: ${MINIO_ASSESSKEY:minioadmin}
   secretkey: ${MINIO_SECRETKEY:minioadmin}
   bucket: ${MINIO_BUCKET:tuinetest}
+
+
+oss:
+  enabled: true
+  type: MINIO
+  endpoint: ${MINIO_ENDPOINT:https://http://localhost:9000}
+  access-key: ${MINIO_ASSESSKEY:minioadmin}
+  secret-key: ${MINIO_SECRETKEY:minioadmin}
+  default-bucket-name: ${MINIO_BUCKET:pearl-buckent}

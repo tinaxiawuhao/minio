@@ -1,0 +1,73 @@
+{
+  "groups": [
+    {
+      "name": "minio",
+      "type": "me.tuine.minio.configurer.MinioProperties",
+      "sourceType": "me.tuine.minio.configurer.MinioProperties"
+    },
+    {
+      "name": "oss",
+      "type": "me.tuine.minio.springdemo.OssProperties",
+      "sourceType": "me.tuine.minio.springdemo.OssProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "minio.accesskey",
+      "type": "java.lang.String",
+      "sourceType": "me.tuine.minio.configurer.MinioProperties"
+    },
+    {
+      "name": "minio.bucket",
+      "type": "java.lang.String",
+      "sourceType": "me.tuine.minio.configurer.MinioProperties"
+    },
+    {
+      "name": "minio.endpoint",
+      "type": "java.lang.String",
+      "sourceType": "me.tuine.minio.configurer.MinioProperties"
+    },
+    {
+      "name": "minio.secretkey",
+      "type": "java.lang.String",
+      "sourceType": "me.tuine.minio.configurer.MinioProperties"
+    },
+    {
+      "name": "oss.access-key",
+      "type": "java.lang.String",
+      "description": "用户名",
+      "sourceType": "me.tuine.minio.springdemo.OssProperties"
+    },
+    {
+      "name": "oss.default-bucket-name",
+      "type": "java.lang.String",
+      "description": "默认存储桶名，没有指定时，会放在默认的存储桶",
+      "sourceType": "me.tuine.minio.springdemo.OssProperties"
+    },
+    {
+      "name": "oss.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否开启",
+      "sourceType": "me.tuine.minio.springdemo.OssProperties"
+    },
+    {
+      "name": "oss.endpoint",
+      "type": "java.lang.String",
+      "description": "OSS 访问端点，集群时需提供统一入口",
+      "sourceType": "me.tuine.minio.springdemo.OssProperties"
+    },
+    {
+      "name": "oss.secret-key",
+      "type": "java.lang.String",
+      "description": "密码",
+      "sourceType": "me.tuine.minio.springdemo.OssProperties"
+    },
+    {
+      "name": "oss.type",
+      "type": "me.tuine.minio.springdemo.OssType",
+      "description": "存储对象服务器类型",
+      "sourceType": "me.tuine.minio.springdemo.OssProperties"
+    }
+  ],
+  "hints": []
+}

@@ -1,17 +1,16 @@
-package me.tuine.minio.service.impl;
+package me.test.minio.service.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
-import me.tuine.minio.configurer.MinIoUtils;
-import me.tuine.minio.service.UploadService;
+import me.test.minio.configurer.MinIoUtils;
+import me.test.minio.service.UploadService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 /**
- * @author tuine
+ * @author test
  * @date 2021/3/23
  */
 @Service

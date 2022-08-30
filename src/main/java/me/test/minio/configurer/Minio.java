@@ -1,17 +1,11 @@
-package me.tuine.minio.configurer;
+package me.test.minio.configurer;
 
 import io.minio.*;
 import io.minio.http.Method;
-import io.minio.messages.Part;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class Minio {
 

@@ -1,13 +1,9 @@
-package me.tuine.minio.configurer;
+package me.test.minio.configurer;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- * @author tuine
- * @date 2021/3/23
- */
 @ConfigurationProperties(prefix = "minio")
 @Getter
 @Setter

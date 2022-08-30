@@ -1,4 +1,4 @@
-package me.tuine.minio.util;
+package me.test.minio.util;
 
 
 import com.alibaba.fastjson.JSON;
@@ -26,7 +26,7 @@ import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static me.tuine.minio.util.Dates.Pattern.*;
+import static me.test.minio.util.Dates.Pattern.*;
 
 /**
  * 日期处理类

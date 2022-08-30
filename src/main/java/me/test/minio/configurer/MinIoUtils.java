@@ -1,4 +1,4 @@
-package me.tuine.minio.configurer;
+package me.test.minio.configurer;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
@@ -9,8 +9,9 @@ import io.minio.http.Method;
 import io.minio.messages.Item;
 import io.minio.messages.Part;
 import lombok.SneakyThrows;
-import me.tuine.minio.util.CustomMinioClient;
-import me.tuine.minio.util.Dates;
+import lombok.extern.slf4j.Slf4j;
+import me.test.minio.util.CustomMinioClient;
+import me.test.minio.util.Dates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -25,12 +26,13 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author tuine
+ * @author test
  * @date 2021/3/23
  */
 @Component
 @Configuration
 @EnableConfigurationProperties({MinioProperties.class})
+@Slf4j
 public class MinIoUtils {
 
     @Autowired
@@ -51,6 +53,39 @@ public class MinIoUtils {
                 .build();
         customMinioClient = new CustomMinioClient(minioClient);
     }
+
+    /**
+     * 检查存储桶是否存在
+     *
+     * @param bucketName 存储桶名称
+     * @return
+     * @throws Exception
+     */
+    public boolean bucketExists(String bucketName)  {
+        try {
+            return customMinioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+        } catch (Exception e) {
+            log.error("mino 服务端连接异常",e);
+            throw new RuntimeException("mino 服务端连接异常");
+        }
+    }
+
+    /**
+     * 创建存储桶
+     *
+     * @param bucketName 存储桶名称
+     * @return
+     * @throws Exception
+     */
+    public boolean makeBucket(String bucketName) throws Exception {
+        boolean flag = bucketExists(bucketName);
+        if (!flag) {
+            customMinioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * 单文件签名上传

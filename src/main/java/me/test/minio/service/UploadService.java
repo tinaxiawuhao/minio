@@ -1,9 +1,9 @@
-package me.tuine.minio.service;
+package me.test.minio.service;
 
 import java.util.Map;
 
 /**
- * @author tuine
+ * @author test
  * @date 2021/3/23
  */
 public interface UploadService {

@@ -1,11 +1,11 @@
-package me.tuine.minio.controller;
+package me.test.minio.controller;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONObject;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
-import me.tuine.minio.service.UploadService;
-import me.tuine.minio.springdemo.MinioTemplate;
+import me.test.minio.service.UploadService;
+import me.test.minio.springdemo.MinioTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * @author tuine
- * @date 2021/3/23
- */
 @RestController
 @RequiredArgsConstructor
 public class IndexController {

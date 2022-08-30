@@ -1,4 +1,4 @@
-package me.tuine.minio.configurer;
+package me.test.minio.configurer;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

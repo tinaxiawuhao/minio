@@ -1,4 +1,4 @@
-package me.tuine.minio.util;
+package me.test.minio.util;
 
 import com.google.common.collect.Multimap;
 import io.minio.CreateMultipartUploadResponse;

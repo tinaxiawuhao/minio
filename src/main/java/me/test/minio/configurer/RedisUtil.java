@@ -1,4 +1,4 @@
-package me.tuine.minio.configurer;
+package me.test.minio.configurer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;

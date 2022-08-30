@@ -1,4 +1,4 @@
-package me.tuine.minio.springdemo;
+package me.test.minio.springdemo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -12,16 +12,25 @@ spring:
       pool.max-active: 8 #连接池最大连接数
       pool.max-wait: -1  #连接池最大阻塞等待时间，负值表示没有限制
 minio:
-  endpoint: ${MINIO_ENDPOINT:https://http://localhost:9000}
-  accesskey: ${MINIO_ASSESSKEY:minioadmin}
-  secretkey: ${MINIO_SECRETKEY:minioadmin}
+  endpoint: ${MINIO_ENDPOINT:http://minio-storage-url.hdt.cosmoplat.com}
+  accesskey: ${MINIO_ASSESSKEY:admin}
+  secretkey: ${MINIO_SECRETKEY:12345678}
   bucket: ${MINIO_BUCKET:test}
 
 
 oss:
   enabled: true
   type: MINIO
-  endpoint: ${MINIO_ENDPOINT:https://http://localhost:9000}
-  access-key: ${MINIO_ASSESSKEY:minioadmin}
-  secret-key: ${MINIO_SECRETKEY:minioadmin}
+  endpoint: ${MINIO_ENDPOINT:http://minio-storage-url.hdt.cosmoplat.com}
+  access-key: ${MINIO_ASSESSKEY:admin}
+  secret-key: ${MINIO_SECRETKEY:12345678}
   default-bucket-name: ${MINIO_BUCKET:test-buckent}
+
+
+aws:
+  endPoint: http://oss.hd.cosmoplat.com
+  accessKey: 9A5XWE4XM1S0FRT7V3ER
+  secretKey: G9CUqloMoBj4DitayY7TWQpFeHHLMshpFFmmYxST
+  region: us-east-2
+  bucket: workshop-bucket
+  minPartSize: 5242880

@@ -291,19 +291,25 @@ public class S3Utils {
         long begin = System.currentTimeMillis();
         try {
             // MultipartFile 转 File
-            File toFile = multipartFileToFile(multipartFile);
+//            File toFile = multipartFileToFile(multipartFile);
             for (int i = 0; i < positions.size(); i++) {
                 int finalI = i;
                 exec.execute(() -> {
                     long time1 = System.currentTimeMillis();
-                    UploadPartRequest uploadRequest = new UploadPartRequest()
-                            .withBucketName(bucketName)
-                            .withKey(key)
-                            .withUploadId(initResponse.getUploadId())
-                            .withPartNumber(finalI + 1)
-                            .withFileOffset(positions.get(finalI))
-                            .withFile(toFile)
-                            .withPartSize(Math.min(awsProperties.getMinPartSize(), (size - positions.get(finalI))));
+                    UploadPartRequest uploadRequest = null;
+                    try {
+                        uploadRequest = new UploadPartRequest()
+                                .withBucketName(bucketName)
+                                .withKey(key)
+                                .withUploadId(initResponse.getUploadId())
+                                .withPartNumber(finalI + 1)
+                                .withFileOffset(positions.get(finalI))
+//                                .withFile(toFile)
+                                .withInputStream(multipartFile.getInputStream())
+                                .withPartSize(Math.min(awsProperties.getMinPartSize(), (size - positions.get(finalI))));
+                    } catch (IOException e) {
+                        log.error("Failed to upload, " + e.getMessage());
+                    }
                     // 第二步，上传分段，并把当前段的 PartETag 放到列表中
                     partETags.add(s3Client.uploadPart(uploadRequest).getPartETag());
                     long time2 = System.currentTimeMillis();
@@ -323,7 +329,7 @@ public class S3Utils {
                     initResponse.getUploadId(), partETags);
             s3Client.completeMultipartUpload(compRequest);
             //删除本地缓存文件
-            toFile.delete();
+//            toFile.delete();
         } catch (Exception e) {
             s3Client.abortMultipartUpload(new AbortMultipartUploadRequest(bucketName, key, initResponse.getUploadId()));
             log.error("Failed to upload, " + e.getMessage());

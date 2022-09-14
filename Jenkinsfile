@@ -2,17 +2,17 @@ pipeline{
     agent any
 
     environment {
-        WS = "${WORKSPACE}"
+        WS = "${WORKSPACE}" //项目工程目录
         HARBOR_URL="10.206.73.155"
-        HARBOR_ID="e776c21b-53d5-4746-8359-6d5dac8529fb"
+        HARBOR_ID="e776c21b-53d5-4746-8359-6d5dac8529fb"  //系统设置 -> manage credentials
     }
 
     stages {
         stage("环境检查"){
             steps {
                 sh 'whoami'
-                sh 'echo $JAVA_HOME'
-                sh 'echo $M2_HOME'
+                sh 'echo $JAVA_HOME'  // /usr/local/jdk11
+                sh 'echo $M2_HOME'    // /usr/local/maven
                 sh 'mvn -v'
                 sh 'java -version'
                 sh 'docker version'

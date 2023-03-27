@@ -1,7 +1,8 @@
-package me.test.minio.springdemo;
+package me.test.minio.configurer.oss;
 
 import io.minio.MinioClient;
 import lombok.SneakyThrows;
+import me.test.minio.configurer.redis.RedisUtil;
 import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -17,18 +18,18 @@ public class MinioConfiguration {
 
     @Bean
     @SneakyThrows
-    @ConditionalOnMissingBean(MinioClient.class)
-    public MinioClient minioClient(OssProperties ossProperties) {
-        return MinioClient.builder()
+    @ConditionalOnMissingBean(CustomMinioClient.class)
+    public CustomMinioClient minioClient(OssProperties ossProperties) {
+        return new CustomMinioClient(MinioClient.builder()
                 .endpoint(ossProperties.getEndpoint())
                 .credentials(ossProperties.getAccessKey(), ossProperties.getSecretKey())
-                .build();
+                .build());
     }
 
     @Bean
-    @ConditionalOnBean({MinioClient.class})
+    @ConditionalOnBean({CustomMinioClient.class, RedisUtil.class})
     @ConditionalOnMissingBean(MinioTemplate.class)
-    public MinioTemplate minioTemplate(MinioClient minioClient, OssProperties ossProperties) {
-        return new MinioTemplate(minioClient, ossProperties);
+    public MinioTemplate minioTemplate(RedisUtil redisUtil,CustomMinioClient minioClient, OssProperties ossProperties) {
+        return new MinioTemplate(redisUtil,minioClient, ossProperties);
     }
 }

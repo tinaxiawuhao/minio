@@ -1,4 +1,4 @@
-package me.test.minio.springdemo;
+package me.test.minio.configurer.oss;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

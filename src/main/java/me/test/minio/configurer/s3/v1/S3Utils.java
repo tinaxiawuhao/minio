@@ -1,4 +1,4 @@
-package me.test.minio.s3.v1;
+package me.test.minio.configurer.s3.v1;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -8,16 +8,13 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.services.s3.transfer.*;
-import com.amazonaws.services.s3.transfer.internal.S3ProgressListener;
-import com.amazonaws.services.s3.transfer.model.UploadResult;
 import com.amazonaws.util.StringInputStream;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import me.test.minio.s3.v1.config.AwsProperties;
+import me.test.minio.configurer.s3.v1.config.AwsProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
@@ -26,7 +23,7 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static me.test.minio.s3.v1.BucketAndObjectValidator.*;
+import static me.test.minio.configurer.s3.v1.BucketAndObjectValidator.*;
 
 /**
  * @author test

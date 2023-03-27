@@ -1,7 +1,7 @@
-//package me.test.minio.s3.v2;
+//package me.test.minio.configurer.s3.v2;
 //
 //import lombok.extern.slf4j.Slf4j;
-//import me.test.minio.s3.v1.config.AwsProperties;
+//import me.test.minio.configurer.s3.v1.config.AwsProperties;
 //import org.springframework.boot.context.properties.EnableConfigurationProperties;
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.stereotype.Component;

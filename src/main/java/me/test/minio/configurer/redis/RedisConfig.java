@@ -1,4 +1,4 @@
-package me.test.minio.configurer;
+package me.test.minio.configurer.redis;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

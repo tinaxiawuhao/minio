@@ -3,8 +3,9 @@ package me.test.minio.service.impl;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
-import me.test.minio.configurer.MinIoUtils;
+import me.test.minio.configurer.oss.MinioTemplate;
 import me.test.minio.service.UploadService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -17,7 +18,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UploadServiceImpl implements UploadService {
 
-    private final MinIoUtils minIoUtils;
+    @Autowired
+    MinioTemplate minioTemplate;
 
     @Override
     public Map<String, Object> initMultiPartUpload(String path, String filename, Integer partCount, String contentType) {
@@ -30,10 +32,10 @@ public class UploadServiceImpl implements UploadService {
         Map<String, Object> result;
         // TODO::单文件上传可拆分，这里只做演示，可直接上传完成
         if (partCount == 1) {
-            String uploadObjectUrl = minIoUtils.getUploadObjectUrl(filePath);
+            String uploadObjectUrl = minioTemplate.getUploadObjectUrl(filePath);
             result = ImmutableMap.of("uploadUrls", ImmutableList.of(uploadObjectUrl));
         } else {
-            result = minIoUtils.initMultiPartUpload(filePath, partCount, contentType);
+            result = minioTemplate.initMultiPartUpload(filePath, partCount, contentType);
         }
 
         return result;
@@ -41,6 +43,6 @@ public class UploadServiceImpl implements UploadService {
 
     @Override
     public boolean mergeMultipartUpload(String objectName, String uploadId) {
-        return minIoUtils.mergeMultipartUpload(objectName, uploadId);
+        return minioTemplate.mergeMultipartUpload(objectName, uploadId);
     }
 }

@@ -1,4 +1,4 @@
-package me.test.minio.configurer;
+package me.test.minio.configurer.oss;
 
 import io.minio.*;
 import io.minio.http.Method;

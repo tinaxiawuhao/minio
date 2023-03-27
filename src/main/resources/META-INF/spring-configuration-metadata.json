@@ -2,8 +2,8 @@
   "groups": [
     {
       "name": "aws",
-      "type": "me.test.minio.s3.v1.config.AwsProperties",
-      "sourceType": "me.test.minio.s3.v1.config.AwsProperties"
+      "type": "me.test.minio.configurer.s3.v1.config.AwsProperties",
+      "sourceType": "me.test.minio.configurer.s3.v1.config.AwsProperties"
     },
     {
       "name": "minio",
@@ -12,40 +12,40 @@
     },
     {
       "name": "oss",
-      "type": "me.test.minio.springdemo.OssProperties",
-      "sourceType": "me.test.minio.springdemo.OssProperties"
+      "type": "me.test.minio.configurer.oss.OssProperties",
+      "sourceType": "me.test.minio.configurer.oss.OssProperties"
     }
   ],
   "properties": [
     {
       "name": "aws.access-key",
       "type": "java.lang.String",
-      "sourceType": "me.test.minio.s3.v1.config.AwsProperties"
+      "sourceType": "me.test.minio.configurer.s3.v1.config.AwsProperties"
     },
     {
       "name": "aws.bucket",
       "type": "java.lang.String",
-      "sourceType": "me.test.minio.s3.v1.config.AwsProperties"
+      "sourceType": "me.test.minio.configurer.s3.v1.config.AwsProperties"
     },
     {
       "name": "aws.end-point",
       "type": "java.lang.String",
-      "sourceType": "me.test.minio.s3.v1.config.AwsProperties"
+      "sourceType": "me.test.minio.configurer.s3.v1.config.AwsProperties"
     },
     {
       "name": "aws.min-part-size",
       "type": "java.lang.Long",
-      "sourceType": "me.test.minio.s3.v1.config.AwsProperties"
+      "sourceType": "me.test.minio.configurer.s3.v1.config.AwsProperties"
     },
     {
       "name": "aws.region",
       "type": "java.lang.String",
-      "sourceType": "me.test.minio.s3.v1.config.AwsProperties"
+      "sourceType": "me.test.minio.configurer.s3.v1.config.AwsProperties"
     },
     {
       "name": "aws.secret-key",
       "type": "java.lang.String",
-      "sourceType": "me.test.minio.s3.v1.config.AwsProperties"
+      "sourceType": "me.test.minio.configurer.s3.v1.config.AwsProperties"
     },
     {
       "name": "minio.accesskey",
@@ -71,37 +71,37 @@
       "name": "oss.access-key",
       "type": "java.lang.String",
       "description": "用户名",
-      "sourceType": "me.test.minio.springdemo.OssProperties"
+      "sourceType": "me.test.minio.configurer.oss.OssProperties"
     },
     {
       "name": "oss.default-bucket-name",
       "type": "java.lang.String",
       "description": "默认存储桶名，没有指定时，会放在默认的存储桶",
-      "sourceType": "me.test.minio.springdemo.OssProperties"
+      "sourceType": "me.test.minio.configurer.oss.OssProperties"
     },
     {
       "name": "oss.enabled",
       "type": "java.lang.Boolean",
       "description": "是否开启",
-      "sourceType": "me.test.minio.springdemo.OssProperties"
+      "sourceType": "me.test.minio.configurer.oss.OssProperties"
     },
     {
       "name": "oss.endpoint",
       "type": "java.lang.String",
       "description": "OSS 访问端点，集群时需提供统一入口",
-      "sourceType": "me.test.minio.springdemo.OssProperties"
+      "sourceType": "me.test.minio.configurer.oss.OssProperties"
     },
     {
       "name": "oss.secret-key",
       "type": "java.lang.String",
       "description": "密码",
-      "sourceType": "me.test.minio.springdemo.OssProperties"
+      "sourceType": "me.test.minio.configurer.oss.OssProperties"
     },
     {
       "name": "oss.type",
-      "type": "me.test.minio.springdemo.OssType",
+      "type": "me.test.minio.configurer.oss.OssType",
       "description": "存储对象服务器类型",
-      "sourceType": "me.test.minio.springdemo.OssProperties"
+      "sourceType": "me.test.minio.configurer.oss.OssProperties"
     }
   ],
   "hints": []

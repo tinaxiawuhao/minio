@@ -1,4 +1,4 @@
-package me.test.minio.springdemo;
+package me.test.minio.configurer.oss;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package me.test.minio.s3.v1.config;
+package me.test.minio.configurer.s3.v1.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

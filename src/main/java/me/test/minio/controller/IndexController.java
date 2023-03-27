@@ -5,7 +5,7 @@ import cn.hutool.json.JSONObject;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import me.test.minio.service.UploadService;
-import me.test.minio.springdemo.MinioTemplate;
+import me.test.minio.configurer.oss.MinioTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

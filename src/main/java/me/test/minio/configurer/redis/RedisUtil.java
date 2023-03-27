@@ -1,4 +1,4 @@
-package me.test.minio.configurer;
+package me.test.minio.configurer.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;

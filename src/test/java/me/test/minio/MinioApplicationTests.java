@@ -1,6 +1,6 @@
 package me.test.minio;
 
-import me.test.minio.s3.v1.S3Utils;
+import me.test.minio.configurer.s3.v1.S3Utils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

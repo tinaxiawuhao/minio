@@ -1,4 +1,4 @@
-package me.test.minio.util;
+package me.test.minio.configurer.oss;
 
 import com.google.common.collect.Multimap;
 import io.minio.CreateMultipartUploadResponse;
